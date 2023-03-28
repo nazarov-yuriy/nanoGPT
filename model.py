@@ -126,6 +126,7 @@ class GPTConfig:
     n_embd: int = 768
     dropout: float = 0.0
     bias: bool = True # True: bias in Linears and LayerNorms, like GPT-2. False: a bit better and faster
+    iter_layer: int = 1
 
 class GPT(nn.Module):
 
@@ -190,7 +191,8 @@ class GPT(nn.Module):
         pos_emb = self.transformer.wpe(pos) # position embeddings of shape (1, t, n_embd)
         x = self.transformer.drop(tok_emb + pos_emb)
         for block in self.transformer.h:
-            x = block(x)
+            for _ in range(self.config.iter_layer):
+                x = block(x)
         x = self.transformer.ln_f(x)
 
         if targets is not None:
