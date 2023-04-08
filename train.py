@@ -93,7 +93,7 @@ else:
     # if not ddp, we are running on a single gpu, and one process
     master_process = True
     seed_offset = 0
-    gradient_accumulation_steps *= 8 # simulate 8 gpus
+    # gradient_accumulation_steps *= 8 # simulate 8 gpus
 
 if master_process:
     os.makedirs(out_dir, exist_ok=True)
